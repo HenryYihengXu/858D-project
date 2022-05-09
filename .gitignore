@@ -1,3 +1,7 @@
+.DS_Store
+data/DS_Store
+result/DS_Store
+
 # Prerequisites
 *.d
 
