@@ -32,14 +32,14 @@ def parse_lisa_query_output(path='/nfshomes/yhxu/scratch/858D/858D-project/resul
     }
 
     fileNames = glob.glob(path + '/*')
-    fileNames = list(map(lambda x: x.split('/')[-1], fileNames))
+    # fileNames = list(map(lambda x: x.split('/')[-1], fileNames))
 
     for fileName in fileNames:
-        if fileName == 'analyzeLisa.py' or fileName == '':
+        if fileName[-2:] == 'py' or fileName == '':
             continue
-        if human and fileName[0:5] != 'Human':
+        if human and fileName.split('/')[-1][0:5] != 'Human':
             continue
-        configs = fileName.split('.')
+        configs = fileName.split('/')[-1].split('.')
         try:
             with open(fileName) as f:
                 lines = f.readlines()
@@ -98,6 +98,7 @@ def sortLisa(file='/Users/henryxu/Desktop/Sp2022/858D/project/858D-project/resul
         'threads',
     ]
     df.sort_values(by=columns, ascending=True, inplace=True)
+    df.reset_index(inplace=True)
     df.to_csv(file, index=False)
     return df
             
