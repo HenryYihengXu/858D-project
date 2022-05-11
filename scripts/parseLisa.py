@@ -13,7 +13,7 @@ def main():
     pass
     parse_lisa_query_output()
 
-def parse_lisa_query_output(path='/nfshomes/yhxu/scratch/858D/858D-project/result/query'):
+def parse_lisa_query_output(path='/nfshomes/yhxu/scratch/858D/858D-project/result/query', human=True):
     dic = {
         'tool': [],
         'refName': [],
@@ -23,12 +23,12 @@ def parse_lisa_query_output(path='/nfshomes/yhxu/scratch/858D/858D-project/resul
         'lisaLeafNodes': [],
         'queryLen': [],
         'threads': [],
-        'queryTime': [],
-        'size': [],
+        'queryTime(ms)': [],
+        'size(MB)': [],
         'NUM_IPBWT_BYTES': [],
-        'ipbwtSize': [],
-        'rmiParamSize': [],
-        'trainingDataSize': [],
+        'ipbwtSize(MB)': [],
+        'rmiParamSize(MB)': [],
+        'trainingDataSize(MB)': [],
     }
 
     fileNames = glob.glob(path + '/*')
@@ -36,6 +36,8 @@ def parse_lisa_query_output(path='/nfshomes/yhxu/scratch/858D/858D-project/resul
 
     for fileName in fileNames:
         if fileName == 'analyzeLisa.py' or fileName == '':
+            continue
+        if human and fileName[0:5] != 'Human':
             continue
         configs = fileName.split('.')
         try:
@@ -50,27 +52,27 @@ def parse_lisa_query_output(path='/nfshomes/yhxu/scratch/858D/858D-project/resul
                 dic['lisaLeafNodes'].append(int(configs[2]))
                 dic['queryLen'].append(int(configs[4]))
                 dic['threads'].append(int(configs[3]))
-                dic['queryTime'].append(float(lines[21].split()[2]) * 1000)
+                dic['queryTime(ms)'].append(float(lines[21].split()[2]) * 1000)
                 NUM_IPBWT_BYTES = int(lines[7].split()[2])
                 dic['NUM_IPBWT_BYTES'].append(NUM_IPBWT_BYTES)
                 ipbwtSize = refLen * NUM_IPBWT_BYTES / 1024 / 1024
-                dic['ipbwtSize'].append(ipbwtSize)
+                dic['ipbwtSize(MB)'].append(ipbwtSize)
 
                 rmiParamFile = lines[12].split()[2][:-2]
                 process = subprocess.Popen('du -h ' + rmiParamFile, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
                 out, err = process.communicate()
                 rmiParamSize = str(out).split('\\')[0][2:]
                 rmiParamSize = toMB(rmiParamSize)
-                dic['rmiParamSize'].append(rmiParamSize)
+                dic['rmiParamSize(MB)'].append(rmiParamSize)
 
                 rmiParamFile = lines[8].split()[2][:-2]
                 process = subprocess.Popen('du -h ' + rmiParamFile + '.f64', stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
                 out, err = process.communicate()
                 trainingDataSize = str(out).split('\\')[0][2:]
                 trainingDataSize = toMB(trainingDataSize)
-                dic['trainingDataSize'].append(trainingDataSize)
+                dic['trainingDataSize(MB)'].append(trainingDataSize)
 
-                dic['size'].append(rmiParamSize + ipbwtSize)
+                dic['size(MB)'].append(rmiParamSize + ipbwtSize)
 
         except ValueError:
             print(fileName)
@@ -79,10 +81,13 @@ def parse_lisa_query_output(path='/nfshomes/yhxu/scratch/858D/858D-project/resul
         print(key + ': ' + str(len(value)))
 
     data = pd.DataFrame.from_dict(dic)
-    data.to_csv(path + '/lisa-query-result.csv', index=False)
+    if human:
+        data.to_csv(path + '/lisa-human-query-result.csv', index=False)
+    else:
+        data.to_csv(path + '/lisa-query-result.csv', index=False)
     return data
 
-def sortLisa(file='/Users/henryxu/Desktop/Sp2022/858D/project/858D-project/result/lisa-query-result.csv'):
+def sortLisa(file='/Users/henryxu/Desktop/Sp2022/858D/project/858D-project/result/lisa-human-query-result.csv'):
     df = pd.read_csv(file)
     columns = [
         'tool',
