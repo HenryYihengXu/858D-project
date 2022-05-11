@@ -18,13 +18,16 @@ refs = [
     ]
 
 human = [
+        "Human18",
+        "Human19",
         "Human20",
         "Human21",
+        "Human22",
     ]
 
 def main():
     pass
-    # buildLisa()
+    buildLisa()
     runLisa()
 
 def buildLisa():
@@ -33,7 +36,7 @@ def buildLisa():
         # for numLeafNode in [2**8, 2**10, 2**12, 2**14, 2**16, 2**18, 2**22, 2**20, 2**24, 2**26]:
         for numLeafNode in [2**20]:
             for ref in human:
-                command = '/nfshomes/yhxu/scratch/858D/858D-project/Trans-Omics-Acceleration-Library/LISA/build-index-forward-only-lisa.o'
+                command = '/nfshomes/yhxu/scratch/858D/Trans-Omics-Acceleration-Library/LISA/build-index-forward-only-lisa.o'
                 command += ' /nfshomes/yhxu/scratch/858D/858D-project/data/fasta/' + ref + '.fasta ' 
                 command += str(k) + ' ' + str(numLeafNode)
                 command += ' &> /nfshomes/yhxu/scratch/858D/858D-project/result/build/' + ref + '.' + str(k) + '.' + str(numLeafNode)
@@ -50,8 +53,8 @@ def runLisa():
                 for ref in human:
                     for queryLen in [32, 64, 96, 128]:
                         command = '/nfshomes/yhxu/scratch/858D/Trans-Omics-Acceleration-Library/LISA/exact-search-lisa.o'
-                        command += ' /nfshomes/yhxu/scratch/858D/data/fasta/' + ref + '.fasta' 
-                        command += ' /nfshomes/yhxu/scratch/858D/data/query/' + ref + '.' + str(queryLen) + '.query '
+                        command += ' /nfshomes/yhxu/scratch/858D/858D-project/data/fasta/' + ref + '.fasta' 
+                        command += ' /nfshomes/yhxu/scratch/858D/858D-project/data/query/' + ref + '.' + str(queryLen) + '.query '
                         command += str(k) + ' ' + str(numLeafNode) + ' ' + str(numThreads)
                         command += ' &> /nfshomes/yhxu/scratch/858D/858D-project/result/query/'
                         command += ref + '.' + str(k) + '.' + str(numLeafNode) + '.' + str(numThreads) + '.' + str(queryLen)
