@@ -5,18 +5,22 @@ import pandas as pd
 import random
 
 def main():
+    # fastas = [
+    #     "Chlamydia",
+    #     "Coxiella",
+    #     "Caulobacter",
+    #     "Ecoli",
+    #     "Pseudomonas",
+    # ]
     fastas = [
-        "Chlamydia",
-        "Coxiella",
-        "Caulobacter",
-        "Ecoli",
-        "Pseudomonas",
+        "Human20",
+        "Human21",
     ]
     for fasta in fastas:
-        referencePath = '../../data/fasta/' + fasta + '.fasta'
+        referencePath = '../data/fasta/' + fasta + '.fasta'
         for length in [32, 64, 96, 128]:
-            outputPath = '../../data/query/' + fasta + '.' + str(length) + '.query'
-            generate_queries(referencePath, length, 1000, outputPath)
+            outputPath = '../data/query/' + fasta + '.' + str(length) + '.query'
+            generate_queries(referencePath, length, 10000, outputPath)
 
 def generate_queries(referencePath, length, num, outputPath):
     reference = ""
