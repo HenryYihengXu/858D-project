@@ -11,7 +11,7 @@ import time
 
 def main():
     pass
-    parse_lisa_query_output()
+    # parse_lisa_query_output()
 
 def parse_lisa_query_output(path='/nfshomes/yhxu/scratch/858D/858D-project/result/query', human=True):
     dic = {
@@ -38,6 +38,8 @@ def parse_lisa_query_output(path='/nfshomes/yhxu/scratch/858D/858D-project/resul
         if fileName[-2:] == 'py' or fileName == '':
             continue
         if human and fileName.split('/')[-1][0:5] != 'Human':
+            continue
+        if (not human) and fileName.split('/')[-1][0:5] == 'Human':
             continue
         configs = fileName.split('/')[-1].split('.')
         try:
@@ -74,7 +76,7 @@ def parse_lisa_query_output(path='/nfshomes/yhxu/scratch/858D/858D-project/resul
 
                 dic['size(MB)'].append(rmiParamSize + ipbwtSize)
 
-        except ValueError:
+        except IndexError:
             print(fileName)
 
     for key, value in dic.items():
@@ -82,12 +84,12 @@ def parse_lisa_query_output(path='/nfshomes/yhxu/scratch/858D/858D-project/resul
 
     data = pd.DataFrame.from_dict(dic)
     if human:
-        data.to_csv(path + '/lisa-human-query-result.csv', index=False)
+        data.to_csv('/nfshomes/yhxu/scratch/858D/858D-project/result/lisa-human-query-result.csv', index=False)
     else:
-        data.to_csv(path + '/lisa-query-result.csv', index=False)
+        data.to_csv('/nfshomes/yhxu/scratch/858D/858D-project/result/lisa-prokaryotics-query-result.csv', index=False)
     return data
 
-def sortLisa(file='/Users/henryxu/Desktop/Sp2022/858D/project/858D-project/result/lisa-human-query-result.csv'):
+def sortLisa(file='/Users/henryxu/Desktop/Sp2022/858D/project/858D-project/result/lisa-prokaryotics-query-result.csv'):
     df = pd.read_csv(file)
     columns = [
         'tool',
@@ -99,6 +101,7 @@ def sortLisa(file='/Users/henryxu/Desktop/Sp2022/858D/project/858D-project/resul
     ]
     df.sort_values(by=columns, ascending=True, inplace=True)
     df.reset_index(inplace=True)
+    df.drop(['index'], axis=1, inplace=True)
     df.to_csv(file, index=False)
     return df
             
