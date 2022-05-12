@@ -1,4 +1,4 @@
-tool,refName,refLen,PufferfishK,LisaK,LisaLeafNodes,queryLen,threads,Time of querying(ms),Total Size(MB),,Size of MPHF(Bytes),Size of PosVec(Bytes),Time of Querying(ns)
+tool,refName,refLen,PufferfishK,LisaK,LisaLeafNodes,queryLen,threads,queryTime(ms),size(MB),,Size of MPHF(Bytes),Size of PosVec(Bytes),Time of Querying(ns)
 pufferfish,Caulobac,4042929,32,,,32,1,1.132664,12.98843765,,2620684,10998680,1132664
 pufferfish,Caulobac,4042929,64,,,64,1,1.136424,12.98843765,,2620684,10998680,1136424
 pufferfish,Caulobac,4042929,96,,,96,1,1.283018,12.98843765,,2620684,10998680,1283018

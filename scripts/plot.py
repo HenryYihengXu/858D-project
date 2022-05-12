@@ -118,3 +118,54 @@ def plot_rmi():
     #     plt.text(x, y, y)
     # plt.title('reference size versus size of the serialized corresponding suffix array')
     # plt.savefig('/Users/henryxu/Desktop/Sp2022/858D/858D-assignments/assign2/report/figs/evaluate_buildsa_size_k0.pdf', bbox_inches="tight")
+
+def plot_both():
+    pufferfish = pd.read_csv("/Users/henryxu/Desktop/Sp2022/858D/project/858D-project/result/pufferfish-query-result.csv")
+    pufferfish = pufferfish[pufferfish['refName'].str.contains('Human')].copy()
+    lisa = pd.read_csv("/Users/henryxu/Desktop/Sp2022/858D/project/858D-project/result/lisa-human-query-result.csv")
+    
+    df = pd.concat([pufferfish, lisa])
+
+    df1 = df[df['queryLen'] == 32].copy()
+        
+    plt.figure()
+    sns.lineplot(x='refLen', y='queryTime(ms)', hue='tool', data=df1, marker="o", dashes=False)
+    # plt.ticklabel_format(style='plain')
+    plt.xlabel('reference lenght')
+    plt.ylabel('time of 10000 queries (ms)')
+    plt.xticks(list(df1['refLen']))
+    plt.title('query time versus reference length')
+    plt.savefig('/Users/henryxu/Desktop/Sp2022/858D/project/858D-project/figs/time-refLen-tool.pdf', bbox_inches="tight")
+
+    plt.figure()
+    sns.lineplot(x='refLen', y='size(MB)', hue='tool', data=df1, marker="o", dashes=False)
+    # plt.ticklabel_format(style='plain')
+    plt.xlabel('reference lenght')
+    plt.ylabel('Main components size (ms)')
+    plt.xticks(list(df1['refLen']))
+    plt.title('Main components size versus reference length')
+    plt.savefig('/Users/henryxu/Desktop/Sp2022/858D/project/858D-project/figs/size-refLen-tool.pdf', bbox_inches="tight")
+
+    plt.figure()
+    f, axs = plt.subplots(1,2,
+                      figsize=(10,3),
+                      sharey=True)
+    sns.lineplot(x='refLen', y='queryTime(ms)', hue='queryLen', data=pufferfish, ax=axs[0], marker="o", dashes=False, legend=False)
+    sns.lineplot(x='refLen', y='queryTime(ms)', hue='queryLen', data=lisa, ax=axs[1], marker="o", dashes=False)
+    axs[0].set(xlabel='Pufferfish query time (ms)')
+    axs[1].set(xlabel='LISA query time (ms)')
+    axs[0].set(xticks=list(pufferfish['refLen']))
+    axs[1].set(xticks=list(lisa['refLen']))
+    plt.savefig('/Users/henryxu/Desktop/Sp2022/858D/project/858D-project/figs/time-refLen.pdf', bbox_inches="tight")
+
+    plt.figure()
+    f, axs = plt.subplots(1,2,
+                      figsize=(10,3),
+                      sharey=True)
+    sns.lineplot(x='refLen', y='size(MB)', hue='queryLen', data=pufferfish, ax=axs[0], marker="o", dashes=False, legend=False)
+    sns.lineplot(x='refLen', y='size(MB)', hue='queryLen', data=lisa, ax=axs[1], marker="o", dashes=False)
+    axs[0].set(xlabel='Pufferfish main components size (MB)')
+    axs[1].set(xlabel='LISA main components size (MB)')
+    axs[0].set(xticks=list(pufferfish['refLen']))
+    axs[1].set(xticks=list(lisa['refLen']))
+    plt.savefig('/Users/henryxu/Desktop/Sp2022/858D/project/858D-project/figs/size-refLen.pdf', bbox_inches="tight")
