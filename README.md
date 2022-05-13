@@ -20,7 +20,8 @@ All the testing scripts are placed in the scripts folder.
 - runLisa.py and runPufferfish.py are the scripts that can execute the system commands for running each tool. runPufferfish.py has two modes: build and query. Build mode will run the index command and query mode will run the kquery command.
 
 ## Data
-For prokaryotics reference, we use the data that was provided by homework.
+For prokaryotics references, we use the data from NCMI GenBank at https://www.ncbi.nlm.nih.gov/genome/browse#!/prokaryotes/refseq_category:reference.
+For human chromosome references, we use the data from NCMI GenBank at https://www.ncbi.nlm.nih.gov/genome/gdv/browser/gene/?id=6736.
 
 ## Version of software
 We use the most up-to-date version of both tools
