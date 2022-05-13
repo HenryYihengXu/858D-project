@@ -137,12 +137,21 @@ def plot_both():
     plt.title('query time versus reference length')
     plt.savefig('/Users/henryxu/Desktop/Sp2022/858D/project/858D-project/figs/time-refLen-tool.pdf', bbox_inches="tight")
 
+
+    lisaModelSize = lisa[lisa['queryLen'] == 32].copy()
+    lisaModelSize.replace({'LISA': 'LISA-Model'}, inplace=True)
+    lisaModelSize.rename(columns={'size(MB)': 'x'}, inplace=True)
+    lisaModelSize.rename(columns={'rmiParamSize(MB)': 'size(MB)'}, inplace=True)
+    df2 = pd.concat([df1, lisaModelSize])
+    df2.reset_index(inplace=True)
+    print(df2)
+
     plt.figure()
-    sns.lineplot(x='refLen', y='size(MB)', hue='tool', data=df1, marker="o", dashes=False)
+    sns.lineplot(x='refLen', y='size(MB)', hue='tool', data=df2, marker="o", dashes=False)
     # plt.ticklabel_format(style='plain')
     plt.xlabel('reference lenght')
     plt.ylabel('Main components size (ms)')
-    plt.xticks(list(df1['refLen']))
+    plt.xticks(list(df2['refLen']))
     plt.title('Main components size versus reference length')
     plt.savefig('/Users/henryxu/Desktop/Sp2022/858D/project/858D-project/figs/size-refLen-tool.pdf', bbox_inches="tight")
 
